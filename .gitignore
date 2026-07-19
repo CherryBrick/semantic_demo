@@ -2,6 +2,7 @@
 .plans/
 
 # Python
+uv.lock
 __pycache__/
 *.pyc
 *.pyo
@@ -23,7 +24,7 @@ dbt/dbt_packages/
 *.tfvars
 .terraform.lock.hcl
 
-# DuckDB (fallback)
+# DuckDB
 *.duckdb
 *.duckdb.wal
 
