@@ -1,0 +1,60 @@
+# Private plans and execution logs
+.plans/
+
+# Leftover from restructure (delete when empty)
+semantic-demo/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+dist/
+build/
+
+# dbt
+dbt/logs/
+dbt/target/
+dbt_packages/
+dbt/dbt_packages/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform.lock.hcl
+
+# DuckDB (fallback)
+*.duckdb
+*.duckdb.wal
+
+# Environment / secrets
+.env
+.env.*
+*.secret
+
+# Kaggle credentials
+kaggle.json
+
+# Docker
+docker-compose.override.yml
+
+# Data (large files)
+data/*.csv
+data/*.zip
+data/olist/*.csv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# sqlfluff
+.sqlfluff.cache

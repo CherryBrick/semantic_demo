@@ -1,0 +1,12 @@
+[project]
+name = "semantic-demo"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dbt-core>=1.12.0",
+    "dbt-databricks>=1.10.9",
+    "sqlfluff>=4.2.2",
+    "sqlfluff-templater-dbt>=4.2.2",
+]
