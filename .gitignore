@@ -1,9 +1,6 @@
 # Private plans and execution logs
 .plans/
 
-# Leftover from restructure (delete when empty)
-semantic-demo/
-
 # Python
 __pycache__/
 *.pyc
