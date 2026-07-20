@@ -11,6 +11,10 @@ __pycache__/
 dist/
 build/
 
+# cube
+cube/*.log*
+cube/.cubestore/
+
 # dbt
 dbt/logs/
 dbt/target/

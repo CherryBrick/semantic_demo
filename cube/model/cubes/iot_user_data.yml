@@ -1,0 +1,24 @@
+cubes:
+  - name: iot_user_data
+    sql_table: default.iot_user_data
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: bp
+        sql: bp
+        type: string
+
+      - name: gender
+        sql: gender
+        type: string
+
+    measures:
+      - name: count
+        type: count
+
+    pre_aggregations:
+      # Pre-aggregation definitions go here.
+      # Learn more in the documentation: https://cube.dev/docs/caching/pre-aggregations/getting-started
+
