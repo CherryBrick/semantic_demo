@@ -31,6 +31,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   dbt_semantic_layer:
+    +persist_docs:
+      relation: true
+      columns: true
     bronze:
       +materialized: table
       +schema: bronze
@@ -39,3 +42,9 @@ models:
       +schema: staging
     example:
       +materialized: view
+
+sources:
+  dbt_semantic_layer:
+    +persist_docs:
+      relation: true
+      columns: true
