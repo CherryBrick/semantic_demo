@@ -1,0 +1,23 @@
+name: Deploy Databricks Bundle
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Databricks CLI
+        run: pip install "databricks-cli>=0.18.0"
+
+      - name: Deploy bundle to prod
+        env:
+          DATABRICKS_HOST: dbc-2ce4cb17-1a4f.cloud.databricks.com
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: |
+          cd databricks
+          databricks bundle deploy --target prod

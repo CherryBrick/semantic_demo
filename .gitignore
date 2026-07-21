@@ -58,5 +58,8 @@ data/olist/*.csv
 .DS_Store
 Thumbs.db
 
+# Databricks Asset Bundles
+.databricks/
+
 # sqlfluff
 .sqlfluff.cache

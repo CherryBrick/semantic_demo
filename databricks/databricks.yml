@@ -1,0 +1,14 @@
+bundle:
+  name: semantic-demo
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    workspace:
+      host: dbc-2ce4cb17-1a4f.cloud.databricks.com
+
+  prod:
+    workspace:
+      host: dbc-2ce4cb17-1a4f.cloud.databricks.com

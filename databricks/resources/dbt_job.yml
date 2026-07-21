@@ -1,0 +1,48 @@
+resources:
+  jobs:
+    semantic_demo_dbt:
+      name: semantic_demo_dbt
+
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"
+        timezone_id: "UTC"
+        pause_status: "PAUSED"
+
+      max_concurrent_runs: 1
+
+      git_source:
+        git_url: https://github.com/CherryBrick/semantic_demo.git
+        git_provider: gitHub
+        git_branch: main
+
+      environments:
+        - environment_key: dbt-default
+          spec:
+            environment_version: "5"
+
+      tasks:
+        - task_key: bronze
+          environment_key: dbt-default
+          dbt_task:
+            catalog: semantic-demo-catalog
+            commands:
+              - "dbt deps"
+              - "dbt run --select=bronze"
+            project_directory: "dbt"
+            schema: bronze
+            source: GIT
+            warehouse_id: "0da6b39805021aaa"
+
+        - task_key: staging
+          depends_on:
+            - task_key: bronze
+          environment_key: dbt-default
+          dbt_task:
+            catalog: semantic-demo-catalog
+            commands:
+              - "dbt deps"
+              - "dbt run --select=staging"
+            project_directory: "dbt"
+            schema: staging
+            source: GIT
+            warehouse_id: "0da6b39805021aaa"
