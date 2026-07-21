@@ -6,4 +6,4 @@ select
     cast(customer_zip_code_prefix as int) as customer_zip_code_prefix,
     lower(trim(customer_city)) as customer_city,
     upper(trim(customer_state)) as customer_state
-from {{ source('bronze' 'customers') }}
+from {{ source('bronze', 'customers') }}

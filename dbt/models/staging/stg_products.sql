@@ -10,4 +10,4 @@ select
     cast(product_height_cm as decimal(10, 2)) as product_height_cm,
     cast(product_width_cm as decimal(10, 2)) as product_width_cm,
     lower(trim(product_category_name)) as product_category_name
-from {{ source('bronze' 'products') }}
+from {{ source('bronze', 'products') }}

@@ -8,4 +8,4 @@ select
     cast(review_answer_timestamp as timestamp) as review_answer_timestamp,
     trim(review_comment_title) as review_comment_title,
     trim(review_comment_message) as review_comment_message
-from {{ source('bronze' 'order_reviews') }}
+from {{ source('bronze', 'order_reviews') }}
