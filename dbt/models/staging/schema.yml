@@ -1,0 +1,239 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned Olist customers. One row per customer_id."
+    columns:
+      - name: customer_id
+        description: "Primary key. Unique per order placement."
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_unique_id
+        description: "Unique identifier for the customer across orders."
+        data_tests:
+          - not_null
+      - name: customer_zip_code_prefix
+        description: "First 5 digits of the customer ZIP code."
+        data_tests:
+          - not_null
+      - name: customer_city
+        description: "Customer city name, lowercase and trimmed."
+        data_tests:
+          - not_null
+      - name: customer_state
+        description: "Customer state abbreviation (2 letters, uppercase)."
+        data_tests:
+          - not_null
+
+  - name: stg_orders
+    description: "Cleaned Olist orders. One row per order."
+    columns:
+      - name: order_id
+        description: "Primary key. Unique order identifier."
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Foreign key → stg_customers.customer_id."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: order_status
+        description: "Current status of the order."
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - delivered
+                - shipped
+                - canceled
+                - unavailable
+                - invoiced
+                - processing
+                - created
+                - approved
+      - name: order_purchase_timestamp
+        description: "Timestamp when the order was placed."
+        data_tests:
+          - not_null
+      - name: order_approved_at
+        description: "Timestamp when the payment was approved. Null if not yet approved."
+      - name: order_delivered_carrier_date
+        description: "Timestamp when the order was handed to the carrier. Null if not yet shipped."
+      - name: order_delivered_customer_date
+        description: "Timestamp when the order was delivered. Null if not yet delivered."
+      - name: order_estimated_delivery_date
+        description: "Estimated delivery date promised to the customer."
+
+  - name: stg_order_items
+    description: "Cleaned Olist order items. One row per item within an order."
+    columns:
+      - name: order_id
+        description: "Foreign key → stg_orders.order_id."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: order_item_id
+        description: "Sequential number of the item within the order (1-based)."
+        data_tests:
+          - not_null
+      - name: product_id
+        description: "Foreign key → stg_products.product_id."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+      - name: seller_id
+        description: "Foreign key → stg_sellers.seller_id."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_sellers')
+              field: seller_id
+      - name: shipping_limit_date
+        description: "Deadline for the seller to ship the item."
+      - name: price
+        description: "Item price in BRL."
+        data_tests:
+          - not_null
+      - name: freight_value
+        description: "Freight cost for this item in BRL."
+        data_tests:
+          - not_null
+
+  - name: stg_order_payments
+    description: "Cleaned Olist order payments. One row per payment transaction per order."
+    columns:
+      - name: order_id
+        description: "Foreign key → stg_orders.order_id."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: payment_sequential
+        description: "Sequential number of the payment (1-based)."
+        data_tests:
+          - not_null
+      - name: payment_type
+        description: "Payment method used."
+        data_tests:
+          - not_null
+      - name: payment_installments
+        description: "Number of installments."
+        data_tests:
+          - not_null
+      - name: payment_value
+        description: "Payment value in BRL."
+        data_tests:
+          - not_null
+
+  - name: stg_order_reviews
+    description: "Cleaned Olist order reviews. One row per review per order."
+    columns:
+      - name: review_id
+        description: "Primary key. Unique review identifier."
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Foreign key → stg_orders.order_id."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: review_score
+        description: "Review score from 1 to 5."
+        data_tests:
+          - not_null
+      - name: review_comment_title
+        description: "Title of the review comment. May be null."
+      - name: review_comment_message
+        description: "Body of the review comment. May be null."
+      - name: review_creation_date
+        description: "Timestamp when the review was created."
+      - name: review_answer_timestamp
+        description: "Timestamp when the seller answered the review."
+
+  - name: stg_products
+    description: "Cleaned Olist products. One row per product."
+    columns:
+      - name: product_id
+        description: "Primary key. Unique product identifier."
+        data_tests:
+          - unique
+          - not_null
+      - name: product_category_name
+        description: "Category name in Portuguese. Null for some products."
+      - name: product_name_length
+        description: "Length of the product name (number of characters). Renamed from product_name_lenght."
+      - name: product_description_length
+        description: "Length of the product description (number of characters). Renamed from product_description_lenght."
+      - name: product_photos_qty
+        description: "Number of product photos."
+      - name: product_weight_g
+        description: "Product weight in grams."
+      - name: product_length_cm
+        description: "Product length in centimetres."
+      - name: product_height_cm
+        description: "Product height in centimetres."
+      - name: product_width_cm
+        description: "Product width in centimetres."
+
+  - name: stg_sellers
+    description: "Cleaned Olist sellers. One row per seller."
+    columns:
+      - name: seller_id
+        description: "Primary key. Unique seller identifier."
+        data_tests:
+          - unique
+          - not_null
+      - name: seller_zip_code_prefix
+        description: "First 5 digits of the seller ZIP code."
+        data_tests:
+          - not_null
+      - name: seller_city
+        description: "Seller city name, lowercase and trimmed."
+        data_tests:
+          - not_null
+      - name: seller_state
+        description: "Seller state abbreviation (2 letters, uppercase)."
+        data_tests:
+          - not_null
+
+  - name: stg_geolocation
+    description: "Cleaned Olist geolocation. Maps ZIP code prefixes to lat/lng. May have multiple rows per ZIP prefix."
+    columns:
+      - name: geolocation_zip_code_prefix
+        description: "First 5 digits of the ZIP code."
+        data_tests:
+          - not_null
+      - name: geolocation_lat
+        description: "Latitude."
+      - name: geolocation_lng
+        description: "Longitude."
+      - name: geolocation_city
+        description: "City name, lowercase and trimmed."
+      - name: geolocation_state
+        description: "State abbreviation (2 letters, uppercase)."
+
+  - name: stg_category_translation
+    description: "Translation table from Portuguese to English product category names."
+    columns:
+      - name: product_category_name
+        description: "Portuguese category name. Primary key."
+        data_tests:
+          - unique
+          - not_null
+      - name: product_category_name_english
+        description: "English translation of the category name."
+        data_tests:
+          - unique
+          - not_null
