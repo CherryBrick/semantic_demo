@@ -8,4 +8,4 @@ select
     cast(shipping_limit_date as timestamp) as shipping_limit_date,
     cast(price as decimal(10, 2)) as price,
     cast(freight_value as decimal(10, 2)) as freight_value
-from {{ source('csv', 'order_items') }}
+from {{ source('bronze' 'order_items') }}

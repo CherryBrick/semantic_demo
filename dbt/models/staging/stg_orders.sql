@@ -9,4 +9,4 @@ select
     cast(order_delivered_customer_date as timestamp) as order_delivered_customer_date,
     cast(order_estimated_delivery_date as timestamp) as order_estimated_delivery_date,
     lower(trim(order_status)) as order_status
-from {{ source('csv', 'orders') }}
+from {{ source('bronze' 'orders') }}

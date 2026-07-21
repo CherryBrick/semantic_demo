@@ -6,4 +6,4 @@ select
     cast(geolocation_lng as decimal(10, 6)) as geolocation_lng,
     lower(trim(geolocation_city)) as geolocation_city,
     upper(trim(geolocation_state)) as geolocation_state
-from {{ source('csv', 'geolocation') }}
+from {{ source('bronze' 'geolocation') }}
