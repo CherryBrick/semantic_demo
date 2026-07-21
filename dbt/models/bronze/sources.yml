@@ -1,8 +1,9 @@
 version: 2
 
 sources:
-  - name: csv
+  - name: bronze
     loader: volume_csv
+    catalog: semantic-demo-catalog
     schema: bronze
     tables:
       - name: customers
