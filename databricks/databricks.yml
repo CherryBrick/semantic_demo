@@ -7,8 +7,8 @@ include:
 targets:
   dev:
     workspace:
-      host: https://dbc-2ce4cb17-1a4f.cloud.databricks.com
+      host: dbc-2ce4cb17-1a4f.cloud.databricks.com
 
   prod:
     workspace:
-      host: https://dbc-2ce4cb17-1a4f.cloud.databricks.com
+      host: dbc-2ce4cb17-1a4f.cloud.databricks.com
