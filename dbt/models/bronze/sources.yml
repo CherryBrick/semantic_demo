@@ -1,0 +1,146 @@
+version: 2
+
+sources:
+  - name: csv
+    loader: volume_csv
+    schema: bronze
+    tables:
+      - name: customers
+        description: "Olist customers dataset — one row per customer_id."
+        columns:
+          - name: customer_id
+            description: "Primary key. Unique per order placement."
+          - name: customer_unique_id
+            description: "Unique identifier for the customer across orders."
+          - name: customer_zip_code_prefix
+            description: "First 5 digits of the customer ZIP code."
+          - name: customer_city
+            description: "Customer city name."
+          - name: customer_state
+            description: "Customer state abbreviation (2 letters)."
+
+      - name: orders
+        description: "Olist orders dataset — one row per order."
+        columns:
+          - name: order_id
+            description: "Primary key. Unique order identifier."
+          - name: customer_id
+            description: "Foreign key → customers.customer_id."
+          - name: order_status
+            description: "Current status of the order."
+          - name: order_purchase_timestamp
+            description: "Timestamp when the order was placed."
+          - name: order_approved_at
+            description: "Timestamp when the payment was approved."
+          - name: order_delivered_carrier_date
+            description: "Timestamp when the order was handed to the carrier."
+          - name: order_delivered_customer_date
+            description: "Timestamp when the order was delivered to the customer."
+          - name: order_estimated_delivery_date
+            description: "Estimated delivery date promised to the customer."
+
+      - name: order_items
+        description: "Olist order items — one row per item within an order."
+        columns:
+          - name: order_id
+            description: "Foreign key → orders.order_id."
+          - name: order_item_id
+            description: "Sequential number of the item within the order (1-based)."
+          - name: product_id
+            description: "Foreign key → products.product_id."
+          - name: seller_id
+            description: "Foreign key → sellers.seller_id."
+          - name: shipping_limit_date
+            description: "Deadline for the seller to ship the item."
+          - name: price
+            description: "Item price in BRL."
+          - name: freight_value
+            description: "Freight cost for this item in BRL."
+
+      - name: order_payments
+        description: "Olist order payments — one row per payment transaction per order."
+        columns:
+          - name: order_id
+            description: "Foreign key → orders.order_id."
+          - name: payment_sequential
+            description: "Sequential number of the payment (1-based)."
+          - name: payment_type
+            description: "Payment method used."
+          - name: payment_installments
+            description: "Number of installments."
+          - name: payment_value
+            description: "Payment value in BRL."
+
+      - name: order_reviews
+        description: "Olist order reviews — one row per review per order."
+        columns:
+          - name: review_id
+            description: "Primary key. Unique review identifier."
+          - name: order_id
+            description: "Foreign key → orders.order_id."
+          - name: review_score
+            description: "Review score from 1 to 5."
+          - name: review_comment_title
+            description: "Title of the review comment (optional)."
+          - name: review_comment_message
+            description: "Body of the review comment (optional)."
+          - name: review_creation_date
+            description: "Timestamp when the review was created."
+          - name: review_answer_timestamp
+            description: "Timestamp when the seller answered the review."
+
+      - name: products
+        description: "Olist products dataset — one row per product."
+        columns:
+          - name: product_id
+            description: "Primary key. Unique product identifier."
+          - name: product_category_name
+            description: "Category name in Portuguese."
+          - name: product_name_lenght
+            description: "Length of the product name (number of characters)."
+          - name: product_description_lenght
+            description: "Length of the product description (number of characters)."
+          - name: product_photos_qty
+            description: "Number of product photos."
+          - name: product_weight_g
+            description: "Product weight in grams."
+          - name: product_length_cm
+            description: "Product length in centimetres."
+          - name: product_height_cm
+            description: "Product height in centimetres."
+          - name: product_width_cm
+            description: "Product width in centimetres."
+
+      - name: sellers
+        description: "Olist sellers dataset — one row per seller."
+        columns:
+          - name: seller_id
+            description: "Primary key. Unique seller identifier."
+          - name: seller_zip_code_prefix
+            description: "First 5 digits of the seller ZIP code."
+          - name: seller_city
+            description: "Seller city name."
+          - name: seller_state
+            description: "Seller state abbreviation (2 letters)."
+
+      - name: geolocation
+        description: "Olist geolocation dataset — maps ZIP code prefixes to lat/lng."
+        columns:
+          - name: geolocation_zip_code_prefix
+            description: "First 5 digits of the ZIP code."
+          - name: geolocation_lat
+            description: "Latitude."
+          - name: geolocation_lng
+            description: "Longitude."
+          - name: geolocation_city
+            description: "City name."
+          - name: geolocation_state
+            description: "State abbreviation (2 letters)."
+
+      - name: category_translation
+        description: "Translation table from Portuguese to English category names."
+        columns:
+          - name: product_category_name
+            description: "Portuguese category name (foreign key to products)."
+          - name: product_category_name_english
+            description: "English translation of the category name."
