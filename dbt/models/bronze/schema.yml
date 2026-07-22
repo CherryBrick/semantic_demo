@@ -46,6 +46,10 @@ models:
         description: "Foreign key → orders.order_id."
       - name: order_item_id
         description: "Sequential number of the item within the order (1-based)."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: product_id
         description: "Foreign key → products.product_id."
       - name: seller_id
@@ -54,8 +58,16 @@ models:
         description: "Deadline for the seller to ship the item."
       - name: price
         description: "Item price in BRL."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: freight_value
         description: "Freight cost for this item in BRL."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: _loaded_at
         description: "Timestamp when the record was loaded by dbt."
 
@@ -66,10 +78,18 @@ models:
         description: "Foreign key → orders.order_id."
       - name: payment_sequential
         description: "Sequential number of the payment (1-based)."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: payment_type
         description: "Payment method used."
       - name: payment_installments
         description: "Number of installments."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: payment_value
         description: "Payment value in BRL."
       - name: _loaded_at
@@ -108,18 +128,46 @@ models:
         description: "Category name in Portuguese."
       - name: product_name_lenght
         description: "Length of the product name (number of characters)."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.05
       - name: product_description_lenght
         description: "Length of the product description (number of characters)."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.05
       - name: product_photos_qty
         description: "Number of product photos."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.05
       - name: product_weight_g
         description: "Product weight in grams."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: product_length_cm
         description: "Product length in centimetres."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: product_height_cm
         description: "Product height in centimetres."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: product_width_cm
         description: "Product width in centimetres."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: _loaded_at
         description: "Timestamp when the record was loaded by dbt."
 
