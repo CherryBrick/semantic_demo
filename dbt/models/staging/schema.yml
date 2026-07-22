@@ -39,22 +39,24 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('stg_customers')
-              field: customer_id
+              arguments:
+                to: ref('stg_customers')
+                field: customer_id
       - name: order_status
         description: "Current status of the order."
         data_tests:
           - not_null
           - accepted_values:
-              values:
-                - delivered
-                - shipped
-                - canceled
-                - unavailable
-                - invoiced
-                - processing
-                - created
-                - approved
+              arguments:
+                values:
+                  - delivered
+                  - shipped
+                  - canceled
+                  - unavailable
+                  - invoiced
+                  - processing
+                  - created
+                  - approved
       - name: order_purchase_timestamp
         description: "Timestamp when the order was placed."
         data_tests:
@@ -76,8 +78,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('stg_orders')
-              field: order_id
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
       - name: order_item_id
         description: "Sequential number of the item within the order (1-based)."
         data_tests:
@@ -87,15 +90,17 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('stg_products')
-              field: product_id
+              arguments:
+                to: ref('stg_products')
+                field: product_id
       - name: seller_id
         description: "Foreign key → stg_sellers.seller_id."
         data_tests:
           - not_null
           - relationships:
-              to: ref('stg_sellers')
-              field: seller_id
+              arguments:
+                to: ref('stg_sellers')
+                field: seller_id
       - name: shipping_limit_date
         description: "Deadline for the seller to ship the item."
       - name: price
@@ -115,8 +120,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('stg_orders')
-              field: order_id
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
       - name: payment_sequential
         description: "Sequential number of the payment (1-based)."
         data_tests:
@@ -147,8 +153,9 @@ models:
         data_tests:
           - not_null
           - relationships:
-              to: ref('stg_orders')
-              field: order_id
+              arguments:
+                to: ref('stg_orders')
+                field: order_id
       - name: review_score
         description: "Review score from 1 to 5."
         data_tests:
