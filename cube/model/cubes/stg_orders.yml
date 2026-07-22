@@ -1,0 +1,63 @@
+cubes:
+  - name: stg_orders
+    sql_table: "`semantic-demo-catalog`.`staging`.`stg_orders`"
+    data_source: default
+
+    joins:
+      - name: stg_customers
+        sql: "{stg_orders}.customer_id = {stg_customers}.customer_id"
+        relationship: many_to_one
+
+      - name: stg_order_items
+        sql: "{stg_orders}.order_id = {stg_order_items}.order_id"
+        relationship: one_to_many
+
+      - name: stg_order_payments
+        sql: "{stg_orders}.order_id = {stg_order_payments}.order_id"
+        relationship: one_to_many
+
+      - name: stg_order_reviews
+        sql: "{stg_orders}.order_id = {stg_order_reviews}.order_id"
+        relationship: one_to_many
+
+    dimensions:
+      - name: order_id
+        sql: order_id
+        type: string
+        primary_key: true
+
+      - name: customer_id
+        sql: customer_id
+        type: string
+
+      - name: order_purchase_timestamp
+        sql: order_purchase_timestamp
+        type: time
+
+      - name: order_approved_at
+        sql: order_approved_at
+        type: time
+
+      - name: order_delivered_carrier_date
+        sql: order_delivered_carrier_date
+        type: time
+
+      - name: order_delivered_customer_date
+        sql: order_delivered_customer_date
+        type: time
+
+      - name: order_estimated_delivery_date
+        sql: order_estimated_delivery_date
+        type: time
+
+      - name: order_status
+        sql: order_status
+        type: string
+
+    measures:
+      - name: count
+        type: count
+
+      - name: customer_count
+        type: count_distinct
+        sql: customer_id

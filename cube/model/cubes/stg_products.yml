@@ -1,0 +1,67 @@
+cubes:
+  - name: stg_products
+    sql_table: "`semantic-demo-catalog`.`staging`.`stg_products`"
+    data_source: default
+
+    joins:
+      - name: stg_category_translation
+        sql: "{stg_products}.product_category_name = {stg_category_translation}.product_category_name"
+        relationship: many_to_one
+
+    dimensions:
+      - name: product_id
+        sql: product_id
+        type: string
+        primary_key: true
+
+      - name: product_category_name
+        sql: product_category_name
+        type: string
+
+      - name: product_name_length
+        sql: product_name_length
+        type: number
+
+      - name: product_description_length
+        sql: product_description_length
+        type: number
+
+      - name: product_photos_qty
+        sql: product_photos_qty
+        type: number
+
+      - name: product_weight_g
+        sql: product_weight_g
+        type: number
+
+      - name: product_length_cm
+        sql: product_length_cm
+        type: number
+
+      - name: product_height_cm
+        sql: product_height_cm
+        type: number
+
+      - name: product_width_cm
+        sql: product_width_cm
+        type: number
+
+    measures:
+      - name: count
+        type: count
+
+      - name: avg_weight
+        type: avg
+        sql: product_weight_g
+
+      - name: avg_length
+        type: avg
+        sql: product_length_cm
+
+      - name: avg_height
+        type: avg
+        sql: product_height_cm
+
+      - name: avg_width
+        type: avg
+        sql: product_width_cm

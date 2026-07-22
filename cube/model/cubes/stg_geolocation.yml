@@ -1,0 +1,31 @@
+cubes:
+  - name: stg_geolocation
+    sql_table: "`semantic-demo-catalog`.`staging`.`stg_geolocation`"
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: geolocation_zip_code_prefix
+        sql: geolocation_zip_code_prefix
+        type: number
+
+      - name: geolocation_lat
+        sql: geolocation_lat
+        type: number
+
+      - name: geolocation_lng
+        sql: geolocation_lng
+        type: number
+
+      - name: geolocation_city
+        sql: geolocation_city
+        type: string
+
+      - name: geolocation_state
+        sql: geolocation_state
+        type: string
+
+    measures:
+      - name: count
+        type: count

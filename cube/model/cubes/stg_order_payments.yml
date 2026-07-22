@@ -1,0 +1,48 @@
+cubes:
+  - name: stg_order_payments
+    sql_table: "`semantic-demo-catalog`.`staging`.`stg_order_payments`"
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: id
+        sql: "CONCAT(order_id, '_', payment_sequential)"
+        type: string
+        primary_key: true
+
+      - name: order_id
+        sql: order_id
+        type: string
+
+      - name: payment_sequential
+        sql: payment_sequential
+        type: number
+
+      - name: payment_type
+        sql: payment_type
+        type: string
+
+      - name: payment_installments
+        sql: payment_installments
+        type: number
+
+      - name: payment_value
+        sql: payment_value
+        type: number
+
+    measures:
+      - name: total_payment_value
+        type: sum
+        sql: payment_value
+
+      - name: avg_payment_value
+        type: avg
+        sql: payment_value
+
+      - name: avg_installments
+        type: avg
+        sql: payment_installments
+
+      - name: count
+        type: count

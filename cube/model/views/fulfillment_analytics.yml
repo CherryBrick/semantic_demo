@@ -1,0 +1,30 @@
+views:
+  - name: fulfillment_analytics
+
+    cubes:
+      - join_path: stg_orders
+        includes:
+          - order_purchase_timestamp
+          - order_delivered_customer_date
+          - order_estimated_delivery_date
+          - order_status
+          - count
+
+      - join_path: stg_orders.stg_order_items
+        prefix: true
+        includes:
+          - total_freight
+          - avg_freight
+          - shipping_limit_date
+
+      - join_path: stg_orders.stg_order_items.stg_sellers
+        prefix: true
+        includes:
+          - seller_city
+          - seller_state
+
+      - join_path: stg_orders.stg_order_reviews
+        prefix: true
+        includes:
+          - avg_score
+          - review_score

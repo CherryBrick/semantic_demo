@@ -1,0 +1,28 @@
+cubes:
+  - name: stg_sellers
+    sql_table: "`semantic-demo-catalog`.`staging`.`stg_sellers`"
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: seller_id
+        sql: seller_id
+        type: string
+        primary_key: true
+
+      - name: seller_zip_code_prefix
+        sql: seller_zip_code_prefix
+        type: number
+
+      - name: seller_city
+        sql: seller_city
+        type: string
+
+      - name: seller_state
+        sql: seller_state
+        type: string
+
+    measures:
+      - name: count
+        type: count

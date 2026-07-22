@@ -1,0 +1,67 @@
+cubes:
+  - name: stg_order_items
+    sql_table: "`semantic-demo-catalog`.`staging`.`stg_order_items`"
+    data_source: default
+
+    joins:
+      - name: stg_products
+        sql: "{stg_order_items}.product_id = {stg_products}.product_id"
+        relationship: many_to_one
+
+      - name: stg_sellers
+        sql: "{stg_order_items}.seller_id = {stg_sellers}.seller_id"
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: "CONCAT(order_id, '_', order_item_id)"
+        type: string
+        primary_key: true
+
+      - name: order_id
+        sql: order_id
+        type: string
+
+      - name: order_item_id
+        sql: order_item_id
+        type: number
+
+      - name: product_id
+        sql: product_id
+        type: string
+
+      - name: seller_id
+        sql: seller_id
+        type: string
+
+      - name: shipping_limit_date
+        sql: shipping_limit_date
+        type: time
+
+      - name: price
+        sql: price
+        type: number
+
+      - name: freight_value
+        sql: freight_value
+        type: number
+
+    measures:
+      - name: total_price
+        type: sum
+        sql: price
+
+      - name: avg_price
+        type: avg
+        sql: price
+
+      - name: total_freight
+        type: sum
+        sql: freight_value
+
+      - name: avg_freight
+        type: avg
+        sql: freight_value
+
+      - name: count
+        type: count

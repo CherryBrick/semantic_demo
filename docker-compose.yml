@@ -1,62 +1,56 @@
 services:
  # ===== Cube Semantic Layer =====
   cube:
-    build: ./cube
-    image: cube-databricks:latest
+    build: cube/
     env_file: .env
     ports:
       - "4000:4000"
       - "15432:15432"
-    environment:
-      - CUBEJS_DEV_MODE=true
     volumes:
       - ./cube:/cube/conf
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4000/readyz', r => { process.exit(r.statusCode === 200 ? 0 : 1); }).on('error', () => process.exit(1));"]
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:4000/cubejs-api/v1/meta', r => { process.exit(r.statusCode === 200 ? 0 : 1); }).on('error', () => process.exit(1));"]
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 10s
+      retries: 10
       start_period: 30s
     restart: unless-stopped
 
-  # ===== OpenWebUI =====
-  open-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    ports:
-      - "3000:8080"
-    volumes:
-      - open-webui-data:/app/backend/data
-    environment:
-      - WEBUI_AUTH=true
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    depends_on:
-      cube-mcp:
-        condition: service_healthy
-    restart: unless-stopped
-
-  # ==== 3rdPartyCubeMcp =====
-  cube-mcp:
-    image: ghcr.io/open-webui/mcpo:main
-    command: >
-      --port 8000
-      --api-key myapikey
-      --
-      uvx --with "cubejs-mcp-server @ git+https://github.com/zsembek/Cube.js-MCP-server.git"
-      python -m cubejs_mcp.server
-    environment:
-      - CUBEJS_API_BASE_URL=http://cube:4000/cubejs-api/v1
-      - CUBEJS_API_TOKEN=${CUBEJS_API_TOKEN:-dev}
-    ports:
-      - "8000:8000"        # optional; only for debugging from your host
-    depends_on:
-      cube:
-        condition: service_healthy
-    restart: unless-stopped
-
-volumes:
-  open-webui-data:
-    driver: local
+#   # ===== OpenWebUI =====
+#   open-webui:
+#     image: ghcr.io/open-webui/open-webui:main
+#     ports:
+#       - "3000:8080"
+#     volumes:
+#       - open-webui-data:/app/backend/data
+#     environment:
+#       - WEBUI_AUTH=true
+#     healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost:8080"]
+#       interval: 30s
+#       timeout: 10s
+#       retries: 3
+#     restart: unless-stopped
+#
+#   # ==== 3rdPartyCubeMcp =====
+#   cube-mcp:
+#     image: ghcr.io/open-webui/mcpo:main
+#     command: >
+#       --port 8000
+#       --api-key myapikey
+#       --
+#       uvx --with "cubejs-mcp-server @ git+https://github.com/zsembek/Cube.js-MCP-server.git"
+#       python -m cubejs_mcp.server
+#     environment:
+#       - CUBEJS_API_BASE_URL=http://cube:4000/cubejs-api/v1
+#       - CUBEJS_API_TOKEN=${CUBEJS_API_TOKEN:-dev}
+#     ports:
+#       - "8000:8000"        # optional; only for debugging from your host
+#     depends_on:
+#       cube:
+#         condition: service_healthy
+#     restart: unless-stopped
+#
+# volumes:
+#   open-webui-data:
+#     driver: local

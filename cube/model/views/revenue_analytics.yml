@@ -1,0 +1,28 @@
+views:
+  - name: revenue_analytics
+
+    cubes:
+      - join_path: stg_orders
+        includes:
+          - order_purchase_timestamp
+          - order_status
+          - count
+          - customer_count
+
+      - join_path: stg_orders.stg_order_items
+        prefix: true
+        includes:
+          - total_price
+          - avg_price
+          - total_freight
+          - avg_freight
+
+      - join_path: stg_orders.stg_order_items.stg_products
+        prefix: true
+        includes:
+          - product_category_name
+
+      - join_path: stg_orders.stg_order_items.stg_products.stg_category_translation
+        prefix: true
+        includes:
+          - product_category_name_english
