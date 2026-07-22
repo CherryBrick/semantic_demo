@@ -84,6 +84,10 @@ models:
         description: "Foreign key → orders.order_id."
       - name: review_score
         description: "Review score from 1 to 5."
+        tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.1
       - name: review_comment_title
         description: "Title of the review comment (optional)."
       - name: review_comment_message
