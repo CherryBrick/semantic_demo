@@ -1,0 +1,23 @@
+views:
+  - name: payment_behavior
+
+    cubes:
+      - join_path: stg_orders
+        includes:
+          - order_purchase_timestamp
+          - count
+
+      - join_path: stg_orders.stg_order_payments
+        prefix: true
+        includes:
+          - payment_type
+          - payment_installments
+          - total_payment_value
+          - avg_payment_value
+          - avg_installments
+
+      - join_path: stg_orders.stg_customers
+        prefix: true
+        includes:
+          - customer_city
+          - customer_state

@@ -1,0 +1,52 @@
+cubes:
+  - name: stg_order_reviews
+    sql_table: "`semantic-demo-catalog`.`staging`.`stg_order_reviews`"
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: review_id
+        sql: review_id
+        type: string
+        primary_key: true
+
+      - name: order_id
+        sql: order_id
+        type: string
+
+      - name: review_score
+        sql: review_score
+        type: number
+
+      - name: review_creation_date
+        sql: review_creation_date
+        type: time
+
+      - name: review_answer_timestamp
+        sql: review_answer_timestamp
+        type: time
+
+      - name: review_comment_title
+        sql: review_comment_title
+        type: string
+
+      - name: review_comment_message
+        sql: review_comment_message
+        type: string
+
+    measures:
+      - name: avg_score
+        type: avg
+        sql: review_score
+
+      - name: min_score
+        type: min
+        sql: review_score
+
+      - name: max_score
+        type: max
+        sql: review_score
+
+      - name: count
+        type: count

@@ -1,0 +1,20 @@
+cubes:
+  - name: stg_category_translation
+    sql_table: "`semantic-demo-catalog`.`staging`.`stg_category_translation`"
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: product_category_name
+        sql: product_category_name
+        type: string
+        primary_key: true
+
+      - name: product_category_name_english
+        sql: product_category_name_english
+        type: string
+
+    measures:
+      - name: count
+        type: count

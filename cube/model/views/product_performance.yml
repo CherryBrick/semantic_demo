@@ -1,0 +1,36 @@
+views:
+  - name: product_performance
+
+    cubes:
+      - join_path: stg_orders
+        includes:
+          - order_purchase_timestamp
+          - count
+
+      - join_path: stg_orders.stg_order_items
+        prefix: true
+        includes:
+          - total_price
+          - avg_price
+
+      - join_path: stg_orders.stg_order_items.stg_products
+        prefix: true
+        includes:
+          - product_category_name
+          - avg_weight
+          - avg_length
+          - avg_height
+          - avg_width
+
+      - join_path: stg_orders.stg_order_items.stg_products.stg_category_translation
+        prefix: true
+        includes:
+          - product_category_name_english
+
+      - join_path: stg_orders.stg_order_reviews
+        prefix: true
+        includes:
+          - avg_score
+          - min_score
+          - max_score
+          - review_score

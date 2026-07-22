@@ -1,0 +1,16 @@
+views:
+  - name: customer_insights
+
+    cubes:
+      - join_path: stg_orders
+        includes:
+          - order_purchase_timestamp
+          - count
+          - customer_count
+
+      - join_path: stg_orders.stg_customers
+        prefix: true
+        includes:
+          - customer_city
+          - customer_state
+          - customer_unique_id
