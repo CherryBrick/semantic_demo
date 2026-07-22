@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 select
     cast(seller_id as string) as seller_id,
     cast(seller_zip_code_prefix as int) as seller_zip_code_prefix,

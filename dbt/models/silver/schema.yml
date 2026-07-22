@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_customers
+  - name: silver_customers
     description: "Cleaned Olist customers. One row per customer_id."
     columns:
       - name: customer_id
@@ -26,7 +26,7 @@ models:
         data_tests:
           - not_null
 
-  - name: stg_orders
+  - name: silver_orders
     description: "Cleaned Olist orders. One row per order."
     columns:
       - name: order_id
@@ -35,12 +35,12 @@ models:
           - unique
           - not_null
       - name: customer_id
-        description: "Foreign key → stg_customers.customer_id."
+        description: "Foreign key → silver_customers.customer_id."
         data_tests:
           - not_null
           - relationships:
               arguments:
-                to: ref('stg_customers')
+                to: ref('silver_customers')
                 field: customer_id
       - name: order_status
         description: "Current status of the order."
@@ -70,36 +70,39 @@ models:
       - name: order_estimated_delivery_date
         description: "Estimated delivery date promised to the customer."
 
-  - name: stg_order_items
+  - name: silver_order_items
     description: "Cleaned Olist order items. One row per item within an order."
     columns:
       - name: order_id
-        description: "Foreign key → stg_orders.order_id."
+        description: "Foreign key → silver_orders.order_id."
         data_tests:
           - not_null
           - relationships:
               arguments:
-                to: ref('stg_orders')
+                to: ref('silver_orders')
                 field: order_id
       - name: order_item_id
         description: "Sequential number of the item within the order (1-based)."
         data_tests:
           - not_null
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: product_id
-        description: "Foreign key → stg_products.product_id."
+        description: "Foreign key → silver_products.product_id."
         data_tests:
           - not_null
           - relationships:
               arguments:
-                to: ref('stg_products')
+                to: ref('silver_products')
                 field: product_id
       - name: seller_id
-        description: "Foreign key → stg_sellers.seller_id."
+        description: "Foreign key → silver_sellers.seller_id."
         data_tests:
           - not_null
           - relationships:
               arguments:
-                to: ref('stg_sellers')
+                to: ref('silver_sellers')
                 field: seller_id
       - name: shipping_limit_date
         description: "Deadline for the seller to ship the item."
@@ -107,26 +110,35 @@ models:
         description: "Item price in BRL."
         data_tests:
           - not_null
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: freight_value
         description: "Freight cost for this item in BRL."
         data_tests:
           - not_null
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
 
-  - name: stg_order_payments
+  - name: silver_order_payments
     description: "Cleaned Olist order payments. One row per payment transaction per order."
     columns:
       - name: order_id
-        description: "Foreign key → stg_orders.order_id."
+        description: "Foreign key → silver_orders.order_id."
         data_tests:
           - not_null
           - relationships:
               arguments:
-                to: ref('stg_orders')
+                to: ref('silver_orders')
                 field: order_id
       - name: payment_sequential
         description: "Sequential number of the payment (1-based)."
         data_tests:
           - not_null
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: payment_type
         description: "Payment method used."
         data_tests:
@@ -135,12 +147,15 @@ models:
         description: "Number of installments."
         data_tests:
           - not_null
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: payment_value
         description: "Payment value in BRL."
         data_tests:
           - not_null
 
-  - name: stg_order_reviews
+  - name: silver_order_reviews
     description: "Cleaned Olist order reviews. One row per review per order."
     columns:
       - name: review_id
@@ -149,12 +164,12 @@ models:
           - unique
           - not_null
       - name: order_id
-        description: "Foreign key → stg_orders.order_id."
+        description: "Foreign key → silver_orders.order_id."
         data_tests:
           - not_null
           - relationships:
               arguments:
-                to: ref('stg_orders')
+                to: ref('silver_orders')
                 field: order_id
       - name: review_score
         description: "Review score from 1 to 5."
@@ -169,7 +184,7 @@ models:
       - name: review_answer_timestamp
         description: "Timestamp when the seller answered the review."
 
-  - name: stg_products
+  - name: silver_products
     description: "Cleaned Olist products. One row per product."
     columns:
       - name: product_id
@@ -181,20 +196,48 @@ models:
         description: "Category name in Portuguese. Null for some products."
       - name: product_name_length
         description: "Length of the product name (number of characters). Renamed from product_name_lenght."
+        data_tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.05
       - name: product_description_length
         description: "Length of the product description (number of characters). Renamed from product_description_lenght."
+        data_tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.05
       - name: product_photos_qty
         description: "Number of product photos."
+        data_tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.05
       - name: product_weight_g
         description: "Product weight in grams."
+        data_tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: product_length_cm
         description: "Product length in centimetres."
+        data_tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: product_height_cm
         description: "Product height in centimetres."
+        data_tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
       - name: product_width_cm
         description: "Product width in centimetres."
+        data_tests:
+          - max_invalid_int:
+              arguments:
+                max_ratio: 0.01
 
-  - name: stg_sellers
+  - name: silver_sellers
     description: "Cleaned Olist sellers. One row per seller."
     columns:
       - name: seller_id
@@ -215,7 +258,7 @@ models:
         data_tests:
           - not_null
 
-  - name: stg_geolocation
+  - name: silver_geolocation
     description: "Cleaned Olist geolocation. Maps ZIP code prefixes to lat/lng. May have multiple rows per ZIP prefix."
     columns:
       - name: geolocation_zip_code_prefix
@@ -231,7 +274,7 @@ models:
       - name: geolocation_state
         description: "State abbreviation (2 letters, uppercase)."
 
-  - name: stg_category_translation
+  - name: silver_category_translation
     description: "Translation table from Portuguese to English product category names."
     columns:
       - name: product_category_name

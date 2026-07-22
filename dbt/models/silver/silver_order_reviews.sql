@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 select
     cast(review_id as string) as review_id,
     cast(order_id as string) as order_id,
