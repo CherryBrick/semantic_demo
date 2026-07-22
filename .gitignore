@@ -63,3 +63,6 @@ Thumbs.db
 
 # sqlfluff
 .sqlfluff.cache
+
+# tui sql client
+.harlequin.toml

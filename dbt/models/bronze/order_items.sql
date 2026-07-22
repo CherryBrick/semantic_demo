@@ -1,5 +1,3 @@
-{{ config(materialized='table') }}
-
 select
     *,
     '{{ run_started_at }}' as _loaded_at

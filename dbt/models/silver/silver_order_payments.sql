@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 select
     cast(order_id as string) as order_id,
     cast(payment_sequential as int) as payment_sequential,

@@ -1,5 +1,3 @@
-{{ config(materialized='view') }}
-
 select
     cast(product_id as string) as product_id,
     cast(product_name_lenght as int) as product_name_length,
